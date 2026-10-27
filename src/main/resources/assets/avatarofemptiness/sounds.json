@@ -1,0 +1,185 @@
+{
+  "aoe_hurt_rift": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_hurt/aoe_rift_hurt_1",
+      "avatarofemptiness:avatar_of_emptiness/aoe_hurt/aoe_rift_hurt_2",
+      "avatarofemptiness:avatar_of_emptiness/aoe_hurt/aoe_rift_hurt_3"
+    ]
+  },
+  "aoe_hurt": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_hurt/aoe_hurt_1",
+      "avatarofemptiness:avatar_of_emptiness/aoe_hurt/aoe_hurt_2",
+      "avatarofemptiness:avatar_of_emptiness/aoe_hurt/aoe_hurt_3"
+    ]
+  },
+  "aoe_rift_absorb": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_rift/aoe_rift_absorb"
+    ]
+  },
+  "aoe_rift_eject": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_rift/aoe_rift_eject"
+    ]
+  },
+  "aoe_rift_open": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_rift/aoe_rift_open"
+    ]
+  },
+  "aoe_blood_cry": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_visceral_fountains/aoe_blood_cry"
+    ]
+  },
+  "aoe_blood_fountain": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_visceral_fountains/aoe_blood_fountain"
+    ]
+  },
+  "aoe_blood_ex": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_visceral_fountains/aoe_blood_star_ex1",
+      "avatarofemptiness:avatar_of_emptiness/aoe_visceral_fountains/aoe_blood_star_ex2",
+      "avatarofemptiness:avatar_of_emptiness/aoe_visceral_fountains/aoe_blood_star_ex3"
+    ]
+  },
+  "aoe_blood_star_sever": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_visceral_fountains/aoe_blood_star_sever"
+    ]
+  },
+  "aoe_blood_star_summon": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_visceral_fountains/aoe_blood_star_summon"
+    ]
+  },
+  "aoe_visceral_loop": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_visceral_fountains/aoe_visceral_loop"
+    ]
+  },
+  "aoe_visceral_active": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_visceral_fountains/aoe_visceral_active"
+    ]
+  },
+  "aoe_visceral_start": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_visceral_fountains/aoe_visceral_start"
+    ]
+  },
+  "aoe_absolute_zero_charge": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_subzero_onslaught/aoe_absolute_zero_charge"
+    ]
+  },
+  "aoe_absolute_zero_impact": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_subzero_onslaught/aoe_absolute_zero_impact"
+    ]
+  },
+  "aoe_subzero_charge": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_subzero_onslaught/aoe_subzero_charge"
+    ]
+  },
+  "aoe_subzero_impact": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_subzero_onslaught/aoe_subzero_impact"
+    ]
+  },
+  "aoe_subzero_shoot": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_subzero_onslaught/aoe_subzero_shoot_1",
+      "avatarofemptiness:avatar_of_emptiness/aoe_subzero_onslaught/aoe_subzero_shoot_2",
+      "avatarofemptiness:avatar_of_emptiness/aoe_subzero_onslaught/aoe_subzero_shoot_3"
+    ]
+  },
+  "aoe_subzero_vortex_burst": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_subzero_onslaught/aoe_subzero_vortex_burst"
+    ]
+  },
+  "aoe_subzero_vortex_charge": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_subzero_onslaught/aoe_subzero_vortex_charge"
+    ]
+  },
+  "aoe_ua_charge": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_universal_annihilation/aoe_ua_charge"
+    ]
+  },
+  "aoe_ua_blast": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_universal_annihilation/aoe_ua_blast"
+    ]
+  },
+  "aoe_ua_loop": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_universal_annihilation/aoe_ua_loop"
+    ]
+  },
+  "aoe_ua_vortex": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_universal_annihilation/aoe_ua_vortex"
+    ]
+  },
+  "music_phase1": {
+    "sounds": [
+      {
+        "name": "avatarofemptiness:bossmusic/avatar_of_emptiness_1",
+        "stream": true
+      }
+    ]
+  },
+  "music_phase2": {
+    "sounds": [
+      {
+        "name": "avatarofemptiness:bossmusic/avatar_of_emptiness_2",
+        "stream": true
+      }
+    ]
+  },
+  "music_phase3": {
+    "sounds": [
+      {
+        "name": "avatarofemptiness:bossmusic/avatar_of_emptiness_3",
+        "stream": true
+      }
+    ]
+  },
+  "music_paradise": {
+    "sounds": [
+      {
+        "name": "avatarofemptiness:avatar_of_emptiness/aoe_paradise",
+        "stream": true
+      }
+    ]
+  },
+  "music_winter": {
+    "sounds": [
+      {
+        "name": "avatarofemptiness:avatar_of_emptiness/aoe_winter_started",
+        "stream": true
+      }
+    ]
+  },
+  "aoe_visceral_thorn_charge": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_visceral_fountains/aoe_visceral_thorn_charge"
+    ]
+  },
+  "aoe_visceral_thorn_shoot": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_visceral_fountains/aoe_visceral_thorn_shoot"
+    ]
+  },
+  "aoe_visceral_thorn_retract": {
+    "sounds": [
+      "avatarofemptiness:avatar_of_emptiness/aoe_visceral_fountains/aoe_visceral_thorn_retract"
+    ]
+  }
+}

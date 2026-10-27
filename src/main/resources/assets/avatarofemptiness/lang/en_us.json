@@ -1,0 +1,12 @@
+{
+  "item.avatarofemptiness.dimensional_crasher": "Dimensional Crasher",
+  "item.avatarofemptiness.dimensional_crasher.desc": "Tear open the sky and challenge the Avatar of Emptiness.",
+  "item.avatarofemptiness.dimensional_crasher.in_arena": "You are already inside its universe.",
+  "item.avatarofemptiness.reality_comet": "Reality Comet",
+  "entity.avatarofemptiness.avatar_of_emptiness": "Avatar of Emptiness",
+  "entity.avatarofemptiness.viscera": "Viscera",
+  "death.attack.avatarofemptiness.avatar": "%1$s was erased by the Avatar of Emptiness",
+  "death.attack.avatarofemptiness.avatar.player": "%1$s was erased by %2$s",
+  "death.attack.avatarofemptiness.avatar_true": "%1$s ceased to exist",
+  "death.attack.avatarofemptiness.avatar_true.player": "%1$s ceased to exist before %2$s"
+}

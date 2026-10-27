@@ -1,0 +1,12 @@
+{
+  "item.avatarofemptiness.dimensional_crasher": "차원 분쇄기",
+  "item.avatarofemptiness.dimensional_crasher.desc": "하늘을 찢고 공허함의 화신에게 도전한다.",
+  "item.avatarofemptiness.dimensional_crasher.in_arena": "이미 그것의 우주 안에 있다.",
+  "item.avatarofemptiness.reality_comet": "리얼리티 코멧",
+  "entity.avatarofemptiness.avatar_of_emptiness": "공허함의 화신",
+  "entity.avatarofemptiness.viscera": "내장",
+  "death.attack.avatarofemptiness.avatar": "%1$s이(가) 공허함의 화신에게 지워졌습니다",
+  "death.attack.avatarofemptiness.avatar.player": "%1$s이(가) %2$s에게 지워졌습니다",
+  "death.attack.avatarofemptiness.avatar_true": "%1$s이(가) 존재하지 않게 되었습니다",
+  "death.attack.avatarofemptiness.avatar_true.player": "%1$s이(가) %2$s 앞에서 존재하지 않게 되었습니다"
+}
