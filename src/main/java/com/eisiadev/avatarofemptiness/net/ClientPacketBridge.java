@@ -36,8 +36,8 @@ public final class ClientPacketBridge {
         }
     }
 
-    static void screenShatter() {
-        ScreenShatter.trigger();
+    static void screenShatter(boolean white) {
+        ScreenShatter.trigger(white);
     }
 
     private ClientPacketBridge() {}

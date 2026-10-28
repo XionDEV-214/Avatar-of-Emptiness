@@ -35,12 +35,14 @@ public final class ScreenShatter {
     @Nullable
     private static List<Shard> shards;
     private static boolean pending;
+    private static boolean white;
     private static int age = -1;
 
     private record Shard(float[] xs, float[] ys, float cx, float cy,
                          float vx, float vy, float spin, float grow) {}
 
-    public static void trigger() {
+    public static void trigger(boolean whiteShards) {
+        white = whiteShards;
         pending = true;
         age = 0;
         shards = null;
@@ -62,11 +64,11 @@ public final class ScreenShatter {
         if (age < 0) return;
         if (pending) {
             graphics.flush();
-            captureFrame();
+            if (!white) captureFrame();
             shards = build(width, height, new Random());
             pending = false;
         }
-        if (shards == null || capture == null) return;
+        if (shards == null || (!white && capture == null)) return;
 
         float t = age + partialTick;
         float s = Math.max(0f, t - CRACK);
@@ -82,24 +84,33 @@ public final class ScreenShatter {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-        RenderSystem.setShaderTexture(0, capture.getColorTextureId());
         BufferBuilder b = Tesselator.getInstance().getBuilder();
-        b.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_TEX_COLOR);
+        if (white) {
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            b.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_COLOR);
+        } else {
+            RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+            RenderSystem.setShaderTexture(0, capture.getColorTextureId());
+            b.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_TEX_COLOR);
+        }
         for (Shard sh : shards) {
             float ox = sh.vx * s;
             float oy = sh.vy * s + 0.5f * gravity * s * s;
             float ang = sh.spin * s;
             float sc = 1f + sh.grow * s;
             float cos = Mth.cos(ang) * sc, sin = Mth.sin(ang) * sc;
-            float shade = 1f - 0.25f * Mth.clamp(s / 20f, 0f, 1f);
+            float shade = 1f - (white ? 0.12f : 0.25f) * Mth.clamp(s / 20f, 0f, 1f);
             for (int i = 0; i < 3; i++) {
                 float px = sh.xs[i] - sh.cx, py = sh.ys[i] - sh.cy;
                 float x = sh.cx + ox + px * cos - py * sin;
                 float y = sh.cy + oy + px * sin + py * cos;
                 float u = sh.xs[i] / width;
                 float v = 1f - sh.ys[i] / height;
-                b.vertex(m, x, y, 0f).uv(u, v).color(shade, shade, shade, alpha).endVertex();
+                if (white) {
+                    b.vertex(m, x, y, 0f).color(shade, shade, Math.min(1f, shade + 0.05f), alpha).endVertex();
+                } else {
+                    b.vertex(m, x, y, 0f).uv(u, v).color(shade, shade, shade, alpha).endVertex();
+                }
             }
         }
         BufferUploader.drawWithShader(b.end());
@@ -107,6 +118,8 @@ public final class ScreenShatter {
         float crack = 1f - Mth.clamp((t - CRACK) / 8f, 0f, 1f);
         if (crack > 0f) {
             float ca = Mth.clamp(t / 2f, 0f, 1f) * crack;
+            float lc = white ? 0.62f : 1f;
+            float lb = white ? 0.72f : 1f;
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             RenderSystem.lineWidth(Math.max(1.5f, scaleRef * 1.5f));
             b.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
@@ -115,8 +128,8 @@ public final class ScreenShatter {
                     int j = (i + 1) % 3;
                     float ox = sh.vx * s;
                     float oy = sh.vy * s + 0.5f * gravity * s * s;
-                    b.vertex(m, sh.xs[i] + ox, sh.ys[i] + oy, 0f).color(1f, 1f, 1f, ca).endVertex();
-                    b.vertex(m, sh.xs[j] + ox, sh.ys[j] + oy, 0f).color(1f, 1f, 1f, ca).endVertex();
+                    b.vertex(m, sh.xs[i] + ox, sh.ys[i] + oy, 0f).color(lc, lc, lb, ca).endVertex();
+                    b.vertex(m, sh.xs[j] + ox, sh.ys[j] + oy, 0f).color(lc, lc, lb, ca).endVertex();
                 }
             }
             BufferUploader.drawWithShader(b.end());

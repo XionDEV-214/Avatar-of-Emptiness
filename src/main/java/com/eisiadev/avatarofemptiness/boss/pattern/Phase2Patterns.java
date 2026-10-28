@@ -59,7 +59,7 @@ public final class Phase2Patterns {
             if (at(30)) shatterIntoWhite(SphereVariant.TINT_WHITE);
             if (at(FIRE)) spinRandom(80, BossTuning.SPIN_RATE);
             if (every(FIRE, 5, 16)) inboundComets();
-            if (at(FIRE + 85)) blackoutRestore();
+            if (at(FIRE + 85)) whiteoutRestore();
         }
 
         @Override public void onEnd() {
@@ -90,7 +90,7 @@ public final class Phase2Patterns {
                 sound(ModSounds.ABSOLUTE_ZERO_IMPACT, 1.0f);
                 boss.screenFx(0, 0, 3.0f);
                 burst(32f, 0f);
-                blackoutRestore();
+                whiteoutRestore();
             }
         }
 

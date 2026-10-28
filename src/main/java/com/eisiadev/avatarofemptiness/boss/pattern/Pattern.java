@@ -142,9 +142,10 @@ public abstract class Pattern {
         later(1, () -> boss.setVariant(variant, 0, 0, 0f));
     }
 
-    protected void blackoutRestore() {
-        boss.blackout(BossTuning.BLACKOUT_HOLD, BossTuning.BLACKOUT_FADE);
+    protected void whiteoutRestore() {
+        boss.whiteout(BossTuning.WHITEOUT_HOLD, BossTuning.WHITEOUT_FADE);
         restoreDimension();
+        later(BossTuning.WHITEOUT_HOLD, () -> boss.screenShatter(true));
     }
 
     protected void restoreDimension() {

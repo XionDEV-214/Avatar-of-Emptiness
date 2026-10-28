@@ -26,6 +26,7 @@ public final class ModShaders {
     public static ShaderInstance MESH;
     public static ShaderInstance RING;
     public static ShaderInstance VISCERA;
+    public static ShaderInstance BOSS_BAR;
 
     public static void register(RegisterShadersEvent event) throws IOException {
         VertexFormat ptc = DefaultVertexFormat.POSITION_TEX_COLOR;
@@ -45,6 +46,7 @@ public final class ModShaders {
         reg(event, "mesh", ptc, s -> MESH = s);
         reg(event, "ring", ptc, s -> RING = s);
         reg(event, "viscera", ptc, s -> VISCERA = s);
+        reg(event, "boss_bar", ptc, s -> BOSS_BAR = s);
     }
 
     private static void reg(RegisterShadersEvent event, String name, VertexFormat format,

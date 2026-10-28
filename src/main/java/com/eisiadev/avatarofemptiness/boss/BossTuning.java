@@ -30,9 +30,9 @@ public final class BossTuning {
     public static final float SHOCKWAVE_SPEED = 1.0f;
     public static final float SHOCKWAVE_HEIGHT = 1.0f;
     public static final float COMET_DAMAGE = 200f;
-    public static final float COMET_SPEED = 2.0f;
+    public static final float COMET_SPEED = 3.0f;
     public static final int COMET_DIRECTIONS = 18;
-    public static final float SPIN_RATE = 0.0f;
+    public static final float SPIN_RATE = 3.0f;
     public static final float PULL_STRONG = 0.20f;
     public static final float PULL_SHATTER = 0.256f;
 
@@ -64,8 +64,8 @@ public final class BossTuning {
     public static final double AIR_SLAM_SPEED = 3.5;
     public static final int INBOUND_COMETS = 18;
     public static final int SHATTER_WAIT = 30;
-    public static final int BLACKOUT_HOLD = 10;
-    public static final int BLACKOUT_FADE = 20;
+    public static final int WHITEOUT_HOLD = 8;
+    public static final int WHITEOUT_FADE = 2;
 
     public static final int PARADISE_TIME_LIMIT = 600;
     public static final float PARADISE_TICK_DAMAGE = 20f;

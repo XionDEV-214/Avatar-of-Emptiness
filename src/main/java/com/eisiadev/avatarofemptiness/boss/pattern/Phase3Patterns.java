@@ -82,7 +82,7 @@ public final class Phase3Patterns {
                 sound(ModSounds.ABSOLUTE_ZERO_IMPACT, 1.0f);
                 boss.screenFx(0, 0, 3.5f);
                 burst(45f, 0f);
-                blackoutRestore();
+                whiteoutRestore();
             }
         }
 

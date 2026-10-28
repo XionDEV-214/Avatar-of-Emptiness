@@ -3,7 +3,7 @@ package com.eisiadev.avatarofemptiness.boss;
 import com.eisiadev.avatarofemptiness.registry.ModSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -41,23 +41,23 @@ public enum BossPhase {
         return RIFT;
     }
 
+    public static final String KEY_RIFT = "avatarofemptiness.boss.rift";
+    public static final String KEY_AVATAR = "avatarofemptiness.boss.avatar";
+    public static final String KEY_WRATH = "avatarofemptiness.boss.wrath";
+    public static final String KEY_TITLE = "avatarofemptiness.boss.title";
+    public static final String KEY_NAME = "avatarofemptiness.boss.name";
+    public static final String KEY_PARADISE = "avatarofemptiness.boss.paradise";
+
     public Component displayName() {
         return switch (this) {
-            case RIFT -> Component.literal("균열").withStyle(ChatFormatting.DARK_PURPLE);
-            case AVATAR -> Component.literal("완벽한 세계의 가장 빛나는 별, 공허함의 화신").withStyle(ChatFormatting.DARK_PURPLE);
-            case WRATH -> Component.literal("완벽한 세계의 가장 빛나는 별, 공허함의 화신").withStyle(ChatFormatting.DARK_RED);
-            case PARADISE -> paradiseName();
+            case RIFT -> Component.translatable(KEY_RIFT).withStyle(Style.EMPTY.withColor(0xC23B9E));
+            case AVATAR -> Component.translatable(KEY_AVATAR,
+                    Component.translatable(KEY_TITLE).withStyle(Style.EMPTY.withColor(0xC9B8E8)),
+                    Component.translatable(KEY_NAME).withStyle(Style.EMPTY.withColor(0xFF3355)));
+            case WRATH -> Component.translatable(KEY_WRATH,
+                    Component.translatable(KEY_TITLE).withStyle(Style.EMPTY.withColor(0xE0A0A0)),
+                    Component.translatable(KEY_NAME).withStyle(Style.EMPTY.withColor(0xD0102A)));
+            case PARADISE -> Component.translatable(KEY_PARADISE).withStyle(ChatFormatting.WHITE);
         };
-    }
-
-    private static Component paradiseName() {
-        String word = "PARADISE";
-        MutableComponent c = Component.empty();
-        for (int i = 0; i < word.length(); i++) {
-            if (i > 0) c.append(Component.literal(" "));
-            c.append(Component.literal(String.valueOf(word.charAt(i)))
-                    .withStyle(i % 2 == 0 ? ChatFormatting.BLACK : ChatFormatting.WHITE));
-        }
-        return c;
     }
 }

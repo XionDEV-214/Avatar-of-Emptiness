@@ -594,15 +594,19 @@ public class AvatarEntity extends Monster {
         }
     }
 
-    public void blackout(int hold, int fade) {
+    public void whiteout(int hold, int fade) {
         if (level() instanceof ServerLevel level) {
-            ModNetwork.sendToLevel(level, new ArenaFxPacket(-1, 0xFF000000, fade, 0f, hold));
+            ModNetwork.sendToLevel(level, new ArenaFxPacket(-1, 0xFFFFFFFF, fade, 0f, hold));
         }
     }
 
     public void screenShatter() {
+        screenShatter(false);
+    }
+
+    public void screenShatter(boolean white) {
         if (level() instanceof ServerLevel level) {
-            ModNetwork.sendToLevel(level, new ScreenShatterPacket());
+            ModNetwork.sendToLevel(level, new ScreenShatterPacket(white));
         }
     }
 
