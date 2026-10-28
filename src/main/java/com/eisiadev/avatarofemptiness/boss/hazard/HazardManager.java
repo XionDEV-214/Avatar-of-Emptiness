@@ -26,7 +26,7 @@ public class HazardManager {
     private final IntArrayList outRemove = new IntArrayList();
     private int nextId = 1;
     private int soundBudget;
-    private int thornSoundsThisTick;
+    private final int[] thornSoundLast = {-1000, -1000, -1000};
 
     public HazardManager(AvatarEntity boss) {
         this.boss = boss;
@@ -71,7 +71,6 @@ public class HazardManager {
 
     public void tick(ServerLevel level, List<ServerPlayer> players) {
         soundBudget = 2;
-        thornSoundsThisTick = 0;
         int now = boss.tickCount;
         Hazard[] snapshot = active.toArray(new Hazard[0]);
         for (Hazard h : snapshot) {
@@ -108,9 +107,9 @@ public class HazardManager {
                 }
             }
             case THORN_PORTAL -> {
-                if (h.age == 1) thornSound(level, h, 0, ModSounds.THORN_CHARGE.get(), 1.6f);
-                if (h.age == h.trigger) thornSound(level, h, 1, ModSounds.THORN_SHOOT.get(), 2.4f);
-                if (h.age == h.life - BossTuning.THORN_RETRACT_TICKS) thornSound(level, h, 2, ModSounds.THORN_RETRACT.get(), 1.6f);
+                if (h.age == 1) thornSound(players, now, 0, ModSounds.THORN_CHARGE.get());
+                if (h.age == h.trigger) thornSound(players, now, 1, ModSounds.THORN_SHOOT.get());
+                if (h.age == h.life - BossTuning.THORN_RETRACT_TICKS) thornSound(players, now, 2, ModSounds.THORN_RETRACT.get());
                 if (h.age >= h.trigger && h.age < h.life - BossTuning.THORN_RETRACT_TICKS) {
                     for (ServerPlayer p : players) {
                         if (horizontal(p, h.x, h.z) <= BossTuning.THORN_HIT_RADIUS
@@ -249,11 +248,10 @@ public class HazardManager {
         }
     }
 
-    private void thornSound(ServerLevel level, Hazard h, int bit, net.minecraft.sounds.SoundEvent sound, float volume) {
-        if ((thornSoundsThisTick & (1 << bit)) != 0) return;
-        thornSoundsThisTick |= 1 << bit;
-        level.playSound(null, h.x, h.y, h.z, sound, SoundSource.HOSTILE, volume,
-                0.92f + boss.getRandom().nextFloat() * 0.16f);
+    private void thornSound(List<ServerPlayer> players, int now, int kind, net.minecraft.sounds.SoundEvent sound) {
+        if (now - thornSoundLast[kind] < BossTuning.THORN_SOUND_WINDOW) return;
+        thornSoundLast[kind] = now;
+        for (ServerPlayer p : players) p.playNotifySound(sound, SoundSource.HOSTILE, 1.0f, 1.0f);
     }
 
     private void explosionSound(ServerLevel level, Hazard h) {

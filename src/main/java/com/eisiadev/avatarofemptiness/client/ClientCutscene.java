@@ -31,7 +31,7 @@ public final class ClientCutscene {
         t++;
         if (t <= duration) {
             float k = Mth.clamp((duration - t) / (float) MUSIC_FADE, 0f, 1f);
-            BossMusicPlayer.setVolume(k * k);
+            BossMusicPlayer.setVolume(ModSounds.MUSIC_WINTER.getId(), k * k);
         }
         if (t > duration + 40) t = -1;
     }

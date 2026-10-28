@@ -71,6 +71,12 @@ public final class Phase3Patterns {
         @Override protected void tick() {
             if (at(0)) transmission();
             if (at(T)) {
+                sound(ModSounds.ABSOLUTE_ZERO_IMPACT, 1.0f);
+                sound(ModSounds.SUBZERO_IMPACT, 0.7f);
+                boss.screenFx(0, 0, 3.0f);
+                boss.screenShatter();
+            }
+            if (at(T + 1)) {
                 shiftDimension(SphereVariant.SHATTER, 0xFFFFFF);
                 sound(ModSounds.SUBZERO_CHARGE, 1.0f);
             }

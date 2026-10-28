@@ -22,6 +22,7 @@ public final class BossTuning {
     public static final float THORN_HEIGHT = 14.0f;
     public static final float THORN_PEEK = 0.18f;
     public static final int THORN_RETRACT_TICKS = 8;
+    public static final int THORN_SOUND_WINDOW = 20;
     public static final double THORN_LINE_SPACING = 4.5;
     public static final double THORN_LINE_RANGE = 64.0;
 
@@ -29,9 +30,9 @@ public final class BossTuning {
     public static final float SHOCKWAVE_SPEED = 1.0f;
     public static final float SHOCKWAVE_HEIGHT = 1.0f;
     public static final float COMET_DAMAGE = 200f;
-    public static final float COMET_SPEED = 3.0f;
+    public static final float COMET_SPEED = 2.0f;
     public static final int COMET_DIRECTIONS = 18;
-    public static final float SPIN_RATE = 3.0f;
+    public static final float SPIN_RATE = 0.0f;
     public static final float PULL_STRONG = 0.20f;
     public static final float PULL_SHATTER = 0.256f;
 

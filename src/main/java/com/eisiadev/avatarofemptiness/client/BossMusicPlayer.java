@@ -15,6 +15,8 @@ public final class BossMusicPlayer {
     private static Track current;
     @Nullable
     private static ResourceLocation currentId;
+    private static boolean currentLoop;
+    private static int silentTicks;
 
     public static void play(ResourceLocation sound, boolean loop) {
         Minecraft mc = Minecraft.getInstance();
@@ -23,11 +25,13 @@ public final class BossMusicPlayer {
         silenceOthers(mc);
         current = new Track(sound, loop);
         currentId = sound;
+        currentLoop = loop;
+        silentTicks = 0;
         mc.getSoundManager().play(current);
     }
 
-    public static void setVolume(float v) {
-        if (current != null) current.setVolume(v);
+    public static void setVolume(ResourceLocation track, float v) {
+        if (current != null && track.equals(currentId)) current.setVolume(v);
     }
 
     public static void stop() {
@@ -54,6 +58,16 @@ public final class BossMusicPlayer {
             return;
         }
         mc.getMusicManager().stopPlaying();
+        if (current != null && currentLoop && !mc.getSoundManager().isActive(current)) {
+            if (++silentTicks > 20) {
+                ResourceLocation id = currentId;
+                current = null;
+                currentId = null;
+                play(id, true);
+            }
+        } else {
+            silentTicks = 0;
+        }
     }
 
     private static void silenceOthers(Minecraft mc) {

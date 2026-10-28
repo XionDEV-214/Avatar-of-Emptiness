@@ -237,7 +237,7 @@ public class AvatarEntity extends Monster {
     private void applyMaxHealth(BossPhase p) {
         AttributeInstance attr = getAttribute(Attributes.MAX_HEALTH);
         if (attr != null) attr.setBaseValue(p.maxHealth);
-        setHealth((float) p.maxHealth);
+        setHealth(getMaxHealth());
     }
 
     private void playHurt() {

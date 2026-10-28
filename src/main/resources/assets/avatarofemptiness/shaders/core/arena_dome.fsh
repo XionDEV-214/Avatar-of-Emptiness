@@ -19,8 +19,15 @@ vec3 palette(float t) {
     return mix(PalC, PalD, t - 2.0);
 }
 
-float hash(vec2 p) {
-    return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+float hash(vec2 p, float f) {
+    uvec3 q = uvec3(uvec2(ivec2(p)), uint(int(f)));
+    uint h = q.x * 1597334677u ^ q.y * 3812015801u ^ q.z * 2654435761u;
+    h ^= h >> 15u;
+    h *= 2246822519u;
+    h ^= h >> 13u;
+    h *= 3266489917u;
+    h ^= h >> 16u;
+    return float(h) * (1.0 / 4294967295.0);
 }
 
 float noise(vec2 uv) {
@@ -72,7 +79,7 @@ void main() {
         col += PalB * 0.04 * smoothstep(0.4, 0.9, a);
     } else {
         vec2 g = floor(uv * vec2(1024.0, 512.0));
-        float s = hash(g + floor(Time * 30.0) * vec2(1.7, 9.2));
+        float s = hash(g, floor(Time * 30.0));
         float scan = 0.85 + 0.15 * sin(v * 900.0 + Time * 40.0);
         col = vec3(s * scan);
     }
