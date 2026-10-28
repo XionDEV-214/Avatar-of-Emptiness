@@ -70,22 +70,9 @@ public final class Phase3Patterns {
 
         @Override protected void tick() {
             if (at(0)) transmission();
-            if (at(T)) {
-                sound(ModSounds.ABSOLUTE_ZERO_IMPACT, 1.0f);
-                sound(ModSounds.SUBZERO_IMPACT, 0.7f);
-                boss.screenFx(0, 0, 3.0f);
-                boss.screenShatter();
-            }
-            if (at(T + 1)) {
-                shiftDimension(SphereVariant.SHATTER, 0xFFFFFF);
-                sound(ModSounds.SUBZERO_CHARGE, 1.0f);
-            }
-            if (at(T + 30)) {
-                sound(ModSounds.SUBZERO_IMPACT, 1.0f);
-                boss.screenFx(0xFFFFFFFF, 20, 1.5f);
-            }
-            if (at(T + 50)) spinRandom(80, BossTuning.SPIN_RATE);
-            if (every(T + 50, 2, 40)) inboundComets();
+            if (at(T)) shatterIntoWhite(SphereVariant.SHATTER);
+            if (at(T + BossTuning.SHATTER_WAIT)) spinRandom(80, BossTuning.SPIN_RATE);
+            if (every(T + BossTuning.SHATTER_WAIT, 2, 40)) inboundComets();
             if (at(CHARGE_START)) {
                 sound(ModSounds.ABSOLUTE_ZERO_CHARGE, 1.0f);
                 dangerZone(45f, CHARGE, 0.75f);
@@ -93,10 +80,9 @@ public final class Phase3Patterns {
             if (between(CHARGE_START, CHARGE_START + CHARGE - 3)) pullPlayers(bx(), bz(), BossTuning.PULL_SHATTER);
             if (at(CHARGE_START + CHARGE)) {
                 sound(ModSounds.ABSOLUTE_ZERO_IMPACT, 1.0f);
-                boss.screenFx(0x88FFFFFF, 10, 3.5f);
-                boss.screenShatter();
+                boss.screenFx(0, 0, 3.5f);
                 burst(45f, 0f);
-                restoreDimension();
+                blackoutRestore();
             }
         }
 

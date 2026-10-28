@@ -594,6 +594,12 @@ public class AvatarEntity extends Monster {
         }
     }
 
+    public void blackout(int hold, int fade) {
+        if (level() instanceof ServerLevel level) {
+            ModNetwork.sendToLevel(level, new ArenaFxPacket(-1, 0xFF000000, fade, 0f, hold));
+        }
+    }
+
     public void screenShatter() {
         if (level() instanceof ServerLevel level) {
             ModNetwork.sendToLevel(level, new ScreenShatterPacket());

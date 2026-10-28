@@ -17,7 +17,7 @@ public final class ClientPacketBridge {
     }
 
     static void arenaFx(ArenaFxPacket msg) {
-        ClientArenaState.apply(msg.variant(), msg.flashColor(), msg.flashTicks(), msg.shake());
+        ClientArenaState.apply(msg.variant(), msg.flashColor(), msg.flashTicks(), msg.shake(), msg.flashHold());
     }
 
     static void music(MusicPacket msg) {

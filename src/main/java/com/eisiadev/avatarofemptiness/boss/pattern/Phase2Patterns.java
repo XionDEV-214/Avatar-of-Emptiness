@@ -50,17 +50,16 @@ public final class Phase2Patterns {
     public static class RealityCrashI extends Pattern {
         public RealityCrashI(AvatarEntity boss) { super(boss); }
 
-        @Override public int duration() { return 135; }
+        private static final int FIRE = 30 + BossTuning.SHATTER_WAIT;
+
+        @Override public int duration() { return FIRE + 90; }
 
         @Override protected void tick() {
             if (at(0)) sound(ModSounds.SUBZERO_CHARGE, 1.0f);
-            if (at(30)) {
-                sound(ModSounds.SUBZERO_IMPACT, 1.0f);
-                boss.setVariant(SphereVariant.TINT_WHITE, 0xFFFFFFFF, 20, 1.5f);
-            }
-            if (at(50)) spinRandom(80, BossTuning.SPIN_RATE);
-            if (every(50, 5, 16)) inboundComets();
-            if (at(130)) restoreDimension();
+            if (at(30)) shatterIntoWhite(SphereVariant.TINT_WHITE);
+            if (at(FIRE)) spinRandom(80, BossTuning.SPIN_RATE);
+            if (every(FIRE, 5, 16)) inboundComets();
+            if (at(FIRE + 85)) blackoutRestore();
         }
 
         @Override public void onEnd() {
@@ -72,19 +71,16 @@ public final class Phase2Patterns {
     public static class RealityCrashII extends Pattern {
         public RealityCrashII(AvatarEntity boss) { super(boss); }
 
-        private static final int CHARGE_START = 90;
+        private static final int CHARGE_START = 100;
         private static final int CHARGE = 75;
 
         @Override public int duration() { return CHARGE_START + CHARGE + 10; }
 
         @Override protected void tick() {
             if (at(0)) sound(ModSounds.SUBZERO_CHARGE, 1.0f);
-            if (at(30)) {
-                sound(ModSounds.SUBZERO_IMPACT, 1.0f);
-                boss.setVariant(SphereVariant.TINT_WHITE, 0xFFFFFFFF, 20, 1.5f);
-            }
-            if (at(50)) spinRandom(40, BossTuning.SPIN_RATE * 1.5f);
-            if (every(50, 2, 20)) inboundComets();
+            if (at(30)) shatterIntoWhite(SphereVariant.TINT_WHITE);
+            if (at(30 + BossTuning.SHATTER_WAIT)) spinRandom(40, BossTuning.SPIN_RATE * 1.5f);
+            if (every(30 + BossTuning.SHATTER_WAIT, 2, 20)) inboundComets();
             if (at(CHARGE_START)) {
                 sound(ModSounds.ABSOLUTE_ZERO_CHARGE, 1.0f);
                 dangerZone(32f, CHARGE, 0.5f);
@@ -92,10 +88,9 @@ public final class Phase2Patterns {
             if (between(CHARGE_START, CHARGE_START + CHARGE - 3)) pullPlayers(bx(), bz(), BossTuning.PULL_STRONG);
             if (at(CHARGE_START + CHARGE)) {
                 sound(ModSounds.ABSOLUTE_ZERO_IMPACT, 1.0f);
-                boss.screenFx(0x88FFFFFF, 10, 3.0f);
-                boss.screenShatter();
+                boss.screenFx(0, 0, 3.0f);
                 burst(32f, 0f);
-                restoreDimension();
+                blackoutRestore();
             }
         }
 

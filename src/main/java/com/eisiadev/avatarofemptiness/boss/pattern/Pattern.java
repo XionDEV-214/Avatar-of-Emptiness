@@ -134,6 +134,19 @@ public abstract class Pattern {
         sound(ModSounds.RIFT_EJECT, 1.0f);
     }
 
+    protected void shatterIntoWhite(SphereVariant variant) {
+        sound(ModSounds.ABSOLUTE_ZERO_IMPACT, 1.0f);
+        sound(ModSounds.SUBZERO_IMPACT, 0.7f);
+        boss.screenFx(0, 0, 3.0f);
+        boss.screenShatter();
+        later(1, () -> boss.setVariant(variant, 0, 0, 0f));
+    }
+
+    protected void blackoutRestore() {
+        boss.blackout(BossTuning.BLACKOUT_HOLD, BossTuning.BLACKOUT_FADE);
+        restoreDimension();
+    }
+
     protected void restoreDimension() {
         boss.setVariant(boss.baseVariant(), 0, 0, 0f);
     }

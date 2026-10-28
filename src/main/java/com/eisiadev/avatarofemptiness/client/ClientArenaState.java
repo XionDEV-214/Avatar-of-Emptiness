@@ -10,7 +10,7 @@ public final class ClientArenaState {
     private static int flashMax = 1;
     private static float shake;
 
-    public static void apply(int variantId, int flashArgb, int ticks, float shakeAmount) {
+    public static void apply(int variantId, int flashArgb, int ticks, float shakeAmount, int hold) {
         if (variantId >= 0) {
             SphereVariant v = SphereVariant.byId(variantId);
             if (v != variant) variantFade = 0f;
@@ -18,7 +18,7 @@ public final class ClientArenaState {
         }
         if ((flashArgb >>> 24) != 0 && ticks > 0) {
             flashColor = flashArgb;
-            flashTicks = ticks;
+            flashTicks = ticks + Math.max(0, hold);
             flashMax = ticks;
         }
         if (shakeAmount > 0) shake = Math.max(shake, shakeAmount);
@@ -49,7 +49,7 @@ public final class ClientArenaState {
 
     public static int flashArgb(float partialTick) {
         if (flashTicks <= 0) return 0;
-        float k = Math.max(0f, (flashTicks - partialTick) / flashMax);
+        float k = Math.min(1f, Math.max(0f, (flashTicks - partialTick) / flashMax));
         int a = (int) (((flashColor >>> 24) & 0xFF) * k * k);
         return (a << 24) | (flashColor & 0xFFFFFF);
     }

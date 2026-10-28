@@ -63,6 +63,9 @@ public final class BossTuning {
     public static final int AIR_SLAM_TICKS = 60;
     public static final double AIR_SLAM_SPEED = 3.5;
     public static final int INBOUND_COMETS = 18;
+    public static final int SHATTER_WAIT = 30;
+    public static final int BLACKOUT_HOLD = 10;
+    public static final int BLACKOUT_FADE = 20;
 
     public static final int PARADISE_TIME_LIMIT = 600;
     public static final float PARADISE_TICK_DAMAGE = 20f;
