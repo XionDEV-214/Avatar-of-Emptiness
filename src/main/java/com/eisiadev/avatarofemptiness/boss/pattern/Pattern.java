@@ -145,7 +145,8 @@ public abstract class Pattern {
     protected void whiteoutRestore() {
         boss.whiteout(BossTuning.WHITEOUT_HOLD, BossTuning.WHITEOUT_FADE);
         restoreDimension();
-        later(BossTuning.WHITEOUT_HOLD, () -> boss.screenShatter(true));
+        boss.screenShatter(true);
+        sound(ModSounds.SUBZERO_IMPACT, BossTuning.SHATTER_SOUND_PITCH);
     }
 
     protected void restoreDimension() {

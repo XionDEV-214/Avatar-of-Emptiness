@@ -25,6 +25,7 @@ import java.util.Random;
 
 public final class ScreenShatter {
     private static final int CRACK = 6;
+    private static final int CRACK_WHITE = 1;
     private static final int DURATION = 50;
     private static final int FADE = 16;
     private static final int GRID_X = 11;
@@ -71,7 +72,8 @@ public final class ScreenShatter {
         if (shards == null || (!white && capture == null)) return;
 
         float t = age + partialTick;
-        float s = Math.max(0f, t - CRACK);
+        int crack0 = white ? CRACK_WHITE : CRACK;
+        float s = Math.max(0f, t - crack0);
         float alpha = 1f - Mth.clamp((t - (DURATION - FADE)) / FADE, 0f, 1f);
         float scaleRef = width / 480f;
         float gravity = 0.55f * scaleRef;
@@ -115,7 +117,7 @@ public final class ScreenShatter {
         }
         BufferUploader.drawWithShader(b.end());
 
-        float crack = 1f - Mth.clamp((t - CRACK) / 8f, 0f, 1f);
+        float crack = 1f - Mth.clamp((t - crack0) / 8f, 0f, 1f);
         if (crack > 0f) {
             float ca = Mth.clamp(t / 2f, 0f, 1f) * crack;
             float lc = white ? 0.62f : 1f;

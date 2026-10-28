@@ -64,7 +64,8 @@ public final class BossTuning {
     public static final double AIR_SLAM_SPEED = 3.5;
     public static final int INBOUND_COMETS = 18;
     public static final int SHATTER_WAIT = 30;
-    public static final int WHITEOUT_HOLD = 8;
+    public static final int WHITEOUT_HOLD = 0;
+    public static final float SHATTER_SOUND_PITCH = 1.7f;
     public static final int WHITEOUT_FADE = 2;
 
     public static final int PARADISE_TIME_LIMIT = 600;
