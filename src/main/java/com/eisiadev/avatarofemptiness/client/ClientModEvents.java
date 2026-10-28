@@ -37,6 +37,7 @@ public final class ClientModEvents {
     @SubscribeEvent
     public static void onOverlays(RegisterGuiOverlaysEvent event) {
         event.registerBelowAll("aoe_eclipse", FlashOverlay::renderEclipse);
+        event.registerBelowAll("aoe_shatter", ScreenShatter::render);
         event.registerAboveAll("aoe_flash", FlashOverlay::render);
     }
 

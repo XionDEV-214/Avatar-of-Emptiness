@@ -14,6 +14,7 @@ import com.eisiadev.avatarofemptiness.net.ArenaFxPacket;
 import com.eisiadev.avatarofemptiness.net.HazardSyncPacket;
 import com.eisiadev.avatarofemptiness.net.ModNetwork;
 import com.eisiadev.avatarofemptiness.net.MusicPacket;
+import com.eisiadev.avatarofemptiness.net.ScreenShatterPacket;
 import com.eisiadev.avatarofemptiness.registry.ModEntities;
 import com.eisiadev.avatarofemptiness.registry.ModSounds;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -68,6 +69,7 @@ public class AvatarEntity extends Monster {
     private final Map<UUID, Integer> contactHits = new HashMap<>();
     private final Map<UUID, Vec3> lastPositions = new HashMap<>();
     private final Map<UUID, Vec3> velocities = new HashMap<>();
+    private final Map<UUID, Integer> airTicks = new HashMap<>();
     private List<ServerPlayer> players = List.of();
 
     private BossPhase phase = BossPhase.RIFT;
@@ -315,6 +317,7 @@ public class AvatarEntity extends Monster {
         emptyTicks = 0;
 
         trackVelocities();
+        antiFlight(level);
 
         if (spinTicks > 0) {
             spinTicks--;
@@ -358,6 +361,24 @@ public class AvatarEntity extends Monster {
                 Vec3 old = velocities.getOrDefault(p.getUUID(), Vec3.ZERO);
                 velocities.put(p.getUUID(), old.scale(0.6).add(v.scale(0.4)));
             }
+        }
+    }
+
+    private void antiFlight(ServerLevel level) {
+        for (ServerPlayer p : players) {
+            UUID id = p.getUUID();
+            if (p.onGround() || p.isInWater() || p.isPassenger() || p.getAbilities().flying) {
+                airTicks.remove(id);
+                continue;
+            }
+            int ticks = airTicks.merge(id, 1, Integer::sum);
+            if (ticks < BossTuning.AIR_SLAM_TICKS) continue;
+            airTicks.remove(id);
+            p.stopFallFlying();
+            p.setDeltaMovement(0, -BossTuning.AIR_SLAM_SPEED, 0);
+            p.hurtMarked = true;
+            level.playSound(null, p.getX(), p.getY(), p.getZ(), ModSounds.SUBZERO_IMPACT.get(), SoundSource.HOSTILE, 2.0f, 1.4f);
+            ModNetwork.sendTo(p, new ArenaFxPacket(-1, 0x66FFFFFF, 6, 2.0f));
         }
     }
 
@@ -570,6 +591,12 @@ public class AvatarEntity extends Monster {
         variant = v;
         if (level() instanceof ServerLevel level) {
             ModNetwork.sendToLevel(level, new ArenaFxPacket(v.ordinal(), flashArgb, flashTicks, shake));
+        }
+    }
+
+    public void screenShatter() {
+        if (level() instanceof ServerLevel level) {
+            ModNetwork.sendToLevel(level, new ScreenShatterPacket());
         }
     }
 

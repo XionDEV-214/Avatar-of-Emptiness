@@ -27,9 +27,9 @@ public final class Phase3Patterns {
             if (at(T)) shiftDimension(SphereVariant.VISCERAL, 0xAA0000);
             if (at(WARN)) {
                 baseAngle = Math.toRadians(boss.getYRot());
-                for (int k = 0; k < 4; k++) {
+                for (int k = 0; k < 8; k++) {
                     Hazard h = hazards().spawn(HazardType.DEATHRAY_WARN, bx(), Arena.FLOOR_Y + 1.0, bz());
-                    h.a = (float) (baseAngle + k * Math.PI / 2.0);
+                    h.a = (float) (baseAngle + k * Math.PI / 4.0);
                     h.size = BossTuning.DEATHRAY_LENGTH;
                     h.life = FIRE - WARN;
                 }
@@ -42,15 +42,15 @@ public final class Phase3Patterns {
                 sound(ModSounds.VISCERAL_LOOP, 1.0f);
                 boss.screenFx(0, 0, 1.5f);
                 float spin = random().nextBoolean() ? BossTuning.DEATHRAY_SPIN : -BossTuning.DEATHRAY_SPIN;
-                for (int k = 0; k < 4; k++) {
+                for (int k = 0; k < 8; k++) {
                     Hazard h = hazards().spawn(HazardType.DEATHRAY, bx(), Arena.FLOOR_Y + 1.0, bz());
-                    h.a = (float) (baseAngle + k * Math.PI / 2.0);
+                    h.a = (float) (baseAngle + k * Math.PI / 4.0);
                     h.b = spin;
                     h.size = BossTuning.DEATHRAY_LENGTH;
                     h.life = FIRE_TIME;
                 }
             }
-            if (every(FIRE, 2, 50)) starsRandom(3, 37.0, 20, BossTuning.STAR_DAMAGE_VISCERAL);
+            if (every(FIRE, 2, 50)) starsRandom(4, BossTuning.ATTACK_RADIUS, 20, BossTuning.STAR_DAMAGE_VISCERAL);
             if (at(FIRE + FIRE_TIME)) {
                 sound(ModSounds.RIFT_OPEN, 1.0f);
                 restoreDimension();
@@ -79,7 +79,7 @@ public final class Phase3Patterns {
                 boss.screenFx(0xFFFFFFFF, 20, 1.5f);
             }
             if (at(T + 50)) spinRandom(80, BossTuning.SPIN_RATE);
-            if (every(T + 50, 2, 40)) cometVolley();
+            if (every(T + 50, 2, 40)) inboundComets();
             if (at(CHARGE_START)) {
                 sound(ModSounds.ABSOLUTE_ZERO_CHARGE, 1.0f);
                 dangerZone(45f, CHARGE, 0.75f);
@@ -87,7 +87,8 @@ public final class Phase3Patterns {
             if (between(CHARGE_START, CHARGE_START + CHARGE - 3)) pullPlayers(bx(), bz(), BossTuning.PULL_SHATTER);
             if (at(CHARGE_START + CHARGE)) {
                 sound(ModSounds.ABSOLUTE_ZERO_IMPACT, 1.0f);
-                boss.screenFx(0xFFFFFFFF, 30, 3.5f);
+                boss.screenFx(0x88FFFFFF, 10, 3.5f);
+                boss.screenShatter();
                 burst(45f, 0f);
                 restoreDimension();
             }

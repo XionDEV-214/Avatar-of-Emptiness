@@ -59,7 +59,7 @@ public final class Phase2Patterns {
                 boss.setVariant(SphereVariant.TINT_WHITE, 0xFFFFFFFF, 20, 1.5f);
             }
             if (at(50)) spinRandom(80, BossTuning.SPIN_RATE);
-            if (every(50, 5, 16)) cometVolley();
+            if (every(50, 5, 16)) inboundComets();
             if (at(130)) restoreDimension();
         }
 
@@ -84,16 +84,17 @@ public final class Phase2Patterns {
                 boss.setVariant(SphereVariant.TINT_WHITE, 0xFFFFFFFF, 20, 1.5f);
             }
             if (at(50)) spinRandom(40, BossTuning.SPIN_RATE * 1.5f);
-            if (every(50, 2, 20)) cometVolley();
+            if (every(50, 2, 20)) inboundComets();
             if (at(CHARGE_START)) {
                 sound(ModSounds.ABSOLUTE_ZERO_CHARGE, 1.0f);
-                dangerZone(25f, CHARGE, 0.5f);
+                dangerZone(32f, CHARGE, 0.5f);
             }
             if (between(CHARGE_START, CHARGE_START + CHARGE - 3)) pullPlayers(bx(), bz(), BossTuning.PULL_STRONG);
             if (at(CHARGE_START + CHARGE)) {
                 sound(ModSounds.ABSOLUTE_ZERO_IMPACT, 1.0f);
-                boss.screenFx(0xFFFFFFFF, 25, 3.0f);
-                burst(25f, 0f);
+                boss.screenFx(0x88FFFFFF, 10, 3.0f);
+                boss.screenShatter();
+                burst(32f, 0f);
                 restoreDimension();
             }
         }
@@ -116,7 +117,7 @@ public final class Phase2Patterns {
                 sound(ModSounds.VISCERAL_LOOP, 1.0f);
                 boss.setVariant(SphereVariant.TINT_RED, 0xFFAA0000, 20, 1.5f);
             }
-            if (every(40, 2, 60)) starsRandom(3, 32.0, 20, BossTuning.STAR_DAMAGE_VISCERAL);
+            if (every(40, 2, 60)) starsRandom(4, BossTuning.ATTACK_RADIUS, 20, BossTuning.STAR_DAMAGE_VISCERAL);
             if (every(40, 20, 5)) {
                 vanilla("block.respawn_anchor.deplete", 1.0f);
                 for (ServerPlayer p : players()) ninePattern(boss.predict(p, 20));

@@ -1,6 +1,7 @@
 package com.eisiadev.avatarofemptiness.client.render;
 
 import com.eisiadev.avatarofemptiness.arena.Arena;
+import com.eisiadev.avatarofemptiness.boss.BossTuning;
 import com.eisiadev.avatarofemptiness.boss.hazard.Hazard;
 import com.eisiadev.avatarofemptiness.boss.hazard.HazardType;
 import com.eisiadev.avatarofemptiness.client.ClientHazards;
@@ -161,39 +162,29 @@ final class HazardRenderer {
     }
 
     private static void drawPortals(Vec3 cam, float pt, float time) {
-        if (has(HazardType.THORN_PORTAL, HazardType.BIG_PORTAL)) {
-            ShaderInstance s = WorldFxRenderer.prep(ModShaders.RIFT, time);
-            RenderSystem.setShaderTexture(0, WorldFxRenderer.noise("wavy_blotch_noise"));
-            RenderSystem.setShaderTexture(1, WorldFxRenderer.noise("dendritic_noise"));
-            FxDraw.blendAlpha();
-            BufferBuilder b = FxDraw.begin(s, DefaultVertexFormat.POSITION_TEX_COLOR);
-            for (Hazard h : ClientHazards.all()) {
-                if (h.type != HazardType.THORN_PORTAL && h.type != HazardType.BIG_PORTAL) continue;
-                float age = h.age + pt;
-                float open = Mth.clamp(age / 7f, 0f, 1f) * Mth.clamp((h.life - age) / 7f, 0f, 1f);
-                open = 1f - (1f - open) * (1f - open);
-                if (open <= 0.001f) continue;
-                float half = h.size / 0.45f * (0.55f + 0.45f * open);
-                FxDraw.ground(b, rx(h, cam, pt), ry(h, cam, pt), rz(h, cam, pt), half, h.a, 1f, 1f, 1f, open);
+        if (!has(HazardType.THORN_PORTAL, HazardType.BIG_PORTAL, HazardType.SUBZERO_PORTAL)) return;
+        ShaderInstance s = WorldFxRenderer.prep(ModShaders.RIFT, time);
+        RenderSystem.setShaderTexture(0, WorldFxRenderer.noise("wavy_blotch_noise"));
+        RenderSystem.setShaderTexture(1, WorldFxRenderer.noise("dendritic_noise"));
+        FxDraw.blendAlpha();
+        BufferBuilder b = FxDraw.begin(s, DefaultVertexFormat.POSITION_TEX_COLOR);
+        for (Hazard h : ClientHazards.all()) {
+            boolean subzero = h.type == HazardType.SUBZERO_PORTAL;
+            if (h.type != HazardType.THORN_PORTAL && h.type != HazardType.BIG_PORTAL && !subzero) continue;
+            float age = h.age + pt;
+            float open = Mth.clamp(age / 7f, 0f, 1f) * Mth.clamp((h.life - age) / 7f, 0f, 1f);
+            open = 1f - (1f - open) * (1f - open);
+            if (open <= 0.001f) continue;
+            float half = h.size / 0.45f * (0.55f + 0.45f * open);
+            float r = 1f, g = 0.04f, bl = 0.08f;
+            if (subzero) {
+                r = 0.3f;
+                g = 0.85f;
+                bl = 1f;
             }
-            FxDraw.end(b);
+            FxDraw.ground(b, rx(h, cam, pt), ry(h, cam, pt), rz(h, cam, pt), half, h.a, r, g, bl, open);
         }
-        if (has(HazardType.SUBZERO_PORTAL)) {
-            ShaderInstance s = WorldFxRenderer.prep(ModShaders.PORTAL, time);
-            RenderSystem.setShaderTexture(0, WorldFxRenderer.TEX_PORTAL);
-            RenderSystem.setShaderTexture(1, WorldFxRenderer.noise("wavy_blotch_noise"));
-            FxDraw.blendAlpha();
-            BufferBuilder b = FxDraw.begin(s, DefaultVertexFormat.POSITION_TEX_COLOR);
-            for (Hazard h : ClientHazards.all()) {
-                if (h.type != HazardType.SUBZERO_PORTAL) continue;
-                float age = h.age + pt;
-                float open = Mth.clamp(age / 5f, 0f, 1f) * Mth.clamp((h.life - age) / 6f, 0f, 1f);
-                open = 1f - (1f - open) * (1f - open);
-                FxDraw.ground(b, rx(h, cam, pt), ry(h, cam, pt), rz(h, cam, pt), h.size * 1.3f * open, h.a,
-                        0.35f, 0.85f, 1f, open);
-            }
-            FxDraw.end(b);
-        }
+        FxDraw.end(b);
     }
 
     private static void drawShockwaves(Vec3 cam, float pt, float time) {
@@ -303,7 +294,7 @@ final class HazardRenderer {
         FxDraw.blendAlpha();
         BufferBuilder b = FxDraw.begin(s, DefaultVertexFormat.POSITION_TEX_COLOR);
         final int segs = 16;
-        final float height = 22f;
+        final float height = BossTuning.TORNADO_HEIGHT;
         for (Hazard h : ClientHazards.all()) {
             if (h.type != HazardType.SUBZERO_PORTAL || h.age < h.trigger) continue;
             float age = h.age + pt;
@@ -335,7 +326,7 @@ final class HazardRenderer {
                 float appear = Mth.clamp(age / 4f, 0f, 1f);
                 float urgency = Mth.clamp(age / h.trigger, 0f, 1f);
                 float pulse = 1f + 0.18f * (float) Math.sin(age * (0.6f + urgency * 1.6f));
-                FxDraw.billboard(b, x, y, z, left, up, 1.6f * appear * pulse, 1f, 1f, 1f, 0.9f);
+                FxDraw.billboard(b, x, y, z, left, up, h.size * 0.5f * appear * pulse, 1f, 1f, 1f, 0.9f);
             } else {
                 float k = Mth.clamp((age - h.trigger) / 8f, 0f, 1f);
                 FxDraw.billboard(b, x, y, z, left, up, 2f + h.size * 1.2f * k, 1f, 0.8f, 0.8f, 1f - k);

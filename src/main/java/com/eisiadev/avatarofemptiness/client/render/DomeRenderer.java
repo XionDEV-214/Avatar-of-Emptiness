@@ -67,7 +67,7 @@ final class DomeRenderer {
         RenderSystem.disableCull();
         FxDraw.blendAlpha();
         BufferBuilder b = FxDraw.begin(s, DefaultVertexFormat.POSITION_TEX_COLOR);
-        FxDraw.billboard(b, x, y, z, left, up, half, 1f, 1f, 1f, 1f);
+        FxDraw.billboard(b, x, y, z, left, up, half, 1f, 0.04f, 0.08f, 1f);
         FxDraw.end(b);
         FxDraw.popView();
         FxDraw.restoreState();

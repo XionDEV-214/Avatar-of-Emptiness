@@ -4,6 +4,7 @@ import com.eisiadev.avatarofemptiness.client.BossMusicPlayer;
 import com.eisiadev.avatarofemptiness.client.ClientArenaState;
 import com.eisiadev.avatarofemptiness.client.ClientCutscene;
 import com.eisiadev.avatarofemptiness.client.ClientHazards;
+import com.eisiadev.avatarofemptiness.client.ScreenShatter;
 
 public final class ClientPacketBridge {
 
@@ -33,6 +34,10 @@ public final class ClientPacketBridge {
         } else {
             ClientCutscene.start(msg.duration());
         }
+    }
+
+    static void screenShatter() {
+        ScreenShatter.trigger();
     }
 
     private ClientPacketBridge() {}

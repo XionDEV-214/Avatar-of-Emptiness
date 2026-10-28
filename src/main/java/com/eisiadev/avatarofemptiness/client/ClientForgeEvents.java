@@ -4,10 +4,13 @@ import com.eisiadev.avatarofemptiness.AoeConfig;
 import com.eisiadev.avatarofemptiness.AvatarOfEmptinessMod;
 import com.eisiadev.avatarofemptiness.client.render.WorldFxRenderer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,7 +27,16 @@ public final class ClientForgeEvents {
         ClientHazards.tick();
         ClientArenaState.tick();
         ClientCutscene.tick();
+        ScreenShatter.tick();
         BossMusicPlayer.tick();
+    }
+
+    @SubscribeEvent
+    public static void onPlaySound(PlaySoundEvent event) {
+        SoundInstance sound = event.getSound();
+        if (sound == null || BossMusicPlayer.isOurs(sound)) return;
+        if (sound.getSource() != SoundSource.MUSIC && sound.getSource() != SoundSource.RECORDS) return;
+        if (BossMusicPlayer.blocking()) event.setSound(null);
     }
 
     @SubscribeEvent
@@ -50,6 +62,7 @@ public final class ClientForgeEvents {
         ClientHazards.clear();
         ClientArenaState.reset();
         ClientCutscene.reset();
+        ScreenShatter.reset();
         BossMusicPlayer.stop();
     }
 

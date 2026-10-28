@@ -20,9 +20,9 @@ public final class BossMusicPlayer {
         Minecraft mc = Minecraft.getInstance();
         if (sound.equals(currentId) && current != null && mc.getSoundManager().isActive(current)) return;
         stop();
+        silenceOthers(mc);
         current = new Track(sound, loop);
         currentId = sound;
-        mc.getMusicManager().stopPlaying();
         mc.getSoundManager().play(current);
     }
 
@@ -38,15 +38,28 @@ public final class BossMusicPlayer {
         currentId = null;
     }
 
-    public static void tick() {
-        if (current == null) return;
+    public static boolean blocking() {
         Minecraft mc = Minecraft.getInstance();
-        boolean inArena = mc.level != null && Arena.isArena(mc.level);
-        if (!inArena && !ClientCutscene.active()) {
-            stop();
+        return ClientCutscene.active() || (mc.level != null && Arena.isArena(mc.level));
+    }
+
+    public static boolean isOurs(SoundInstance sound) {
+        return sound instanceof Track;
+    }
+
+    public static void tick() {
+        Minecraft mc = Minecraft.getInstance();
+        if (!blocking()) {
+            if (current != null) stop();
             return;
         }
         mc.getMusicManager().stopPlaying();
+    }
+
+    private static void silenceOthers(Minecraft mc) {
+        mc.getMusicManager().stopPlaying();
+        mc.getSoundManager().stop(null, SoundSource.MUSIC);
+        mc.getSoundManager().stop(null, SoundSource.RECORDS);
     }
 
     private static final class Track extends AbstractTickableSoundInstance {

@@ -25,7 +25,7 @@ void main() {
     e += pow(e, 2.0) * combined * clamp(0.15 / max(d, 0.001), 0.0, 1.0) * 1.4 * (1.0 - vanish);
     e += vanish * 1.6;
 
-    vec3 red = vec3(1.0, 0.04, 0.08);
+    vec3 red = vertexColor.rgb;
     float inside = step(e, 1.0);
     float edge = smoothstep(0.72, 0.99, e) * inside;
     vec3 core = red * edge * 2.4;

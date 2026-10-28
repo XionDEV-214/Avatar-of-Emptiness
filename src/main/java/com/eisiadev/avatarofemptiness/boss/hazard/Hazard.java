@@ -95,6 +95,10 @@ public class Hazard {
             float dx = tx - x, dy = ty - y, dz = tz - z;
             return dx * dx + dy * dy + dz * dz < 4.0f;
         }
+        if (type == HazardType.COMET && b > 0.5f) {
+            float dx = tx - x, dz = tz - z;
+            if (dx * dx + dz * dz < 6.25f) return true;
+        }
         if (type.isProjectile()) {
             return !Arena.inside(x, y, z, -24.0);
         }

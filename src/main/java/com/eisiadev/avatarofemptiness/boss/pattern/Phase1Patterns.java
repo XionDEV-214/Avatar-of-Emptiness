@@ -18,7 +18,7 @@ public final class Phase1Patterns {
             if (at(60)) {
                 sound(ModSounds.BLOOD_STAR_SUMMON, 1.0f);
                 sound(ModSounds.BLOOD_STAR_SUMMON, 0.8f);
-                starsRandom(32, 32.0, 60, BossTuning.STAR_DAMAGE);
+                starsRandom(40, BossTuning.ATTACK_RADIUS, 60, BossTuning.STAR_DAMAGE);
             }
             if (at(90)) sound(ModSounds.BLOOD_STAR_SEVER, 0.8f);
             if (at(94)) sound(ModSounds.BLOOD_STAR_SEVER, 0.85f);
@@ -37,8 +37,8 @@ public final class Phase1Patterns {
             if (at(30)) riftOpen();
             if (at(60)) {
                 vanilla("block.respawn_anchor.deplete", 1.0f);
-                for (int i = 0; i < 40; i++) {
-                    Vec3 p = com.eisiadev.avatarofemptiness.arena.Arena.randomInDisk(random(), bx(), bz(), 32.0, 0);
+                for (int i = 0; i < 64; i++) {
+                    Vec3 p = com.eisiadev.avatarofemptiness.arena.Arena.randomInDisk(random(), bx(), bz(), BossTuning.ATTACK_RADIUS, 0);
                     thornPortal(p.x, p.z);
                 }
             }
@@ -61,7 +61,7 @@ public final class Phase1Patterns {
                 vanilla("block.respawn_anchor.deplete", 1.0f);
                 for (ServerPlayer p : players()) {
                     double base = angleTo(boss.predict(p, 15));
-                    for (int d = -30; d <= 30; d += 30) {
+                    for (int d = -40; d <= 40; d += 20) {
                         thornLine(base + Math.toRadians(d), BossTuning.THORN_LINE_SPACING, BossTuning.THORN_LINE_RANGE);
                     }
                 }
@@ -89,7 +89,10 @@ public final class Phase1Patterns {
                 burst(8f, 0.2f);
                 vanilla("block.respawn_anchor.deplete", 1.0f);
                 for (ServerPlayer p : players()) {
-                    thornLine(angleTo(p.position()), BossTuning.THORN_LINE_SPACING, BossTuning.THORN_LINE_RANGE);
+                    double base = angleTo(p.position());
+                    for (int d = -15; d <= 15; d += 15) {
+                        thornLine(base + Math.toRadians(d), BossTuning.THORN_LINE_SPACING, BossTuning.THORN_LINE_RANGE);
+                    }
                 }
                 if (shot % 4 == 0) shockwave();
             }
@@ -106,7 +109,7 @@ public final class Phase1Patterns {
             if (at(30)) riftOpen();
             if (every(60, 5, 16)) {
                 sound(ModSounds.BLOOD_STAR_SUMMON, 1.0f);
-                starsRandom(4, 32.0, 20, BossTuning.STAR_DAMAGE);
+                starsRandom(6, BossTuning.ATTACK_RADIUS, 20, BossTuning.STAR_DAMAGE);
             }
             if (every(70, 20, 4)) sound(ModSounds.BLOOD_STAR_SEVER, 0.8f);
         }

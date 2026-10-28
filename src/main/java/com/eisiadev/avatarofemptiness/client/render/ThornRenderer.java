@@ -29,7 +29,7 @@ import java.util.Random;
 final class ThornRenderer {
     private static final int SEGS = 18;
     private static final int RINGS = 48;
-    private static final float BASE_RADIUS = 1.15f;
+    private static final float BASE_RADIUS = 1.6f;
     private static final float SIDE_LENGTH = 0.14f;
     private static final float RATE_PEEK = 1f - (float) Math.pow(0.93, 3);
     private static final float RATE_SHOOT = 1f - (float) Math.pow(0.81, 3);

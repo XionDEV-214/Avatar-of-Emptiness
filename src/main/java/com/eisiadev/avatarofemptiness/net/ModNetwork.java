@@ -9,7 +9,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public final class ModNetwork {
-    private static final String VERSION = "1";
+    private static final String VERSION = "2";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             AvatarOfEmptinessMod.id("main"), () -> VERSION, VERSION::equals, VERSION::equals);
 
@@ -34,6 +34,9 @@ public final class ModNetwork {
         CHANNEL.messageBuilder(CutscenePacket.class, id++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(CutscenePacket::encode).decoder(CutscenePacket::decode)
                 .consumerMainThread(CutscenePacket::handle).add();
+        CHANNEL.messageBuilder(ScreenShatterPacket.class, id++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(ScreenShatterPacket::encode).decoder(ScreenShatterPacket::decode)
+                .consumerMainThread(ScreenShatterPacket::handle).add();
     }
 
     public static void sendToLevel(ServerLevel level, Object msg) {

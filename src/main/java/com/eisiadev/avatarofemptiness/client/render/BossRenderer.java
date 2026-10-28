@@ -105,7 +105,7 @@ final class BossRenderer {
                 float y = (float) (Mth.lerp(pt, e.yo, e.getY()) - cam.y) + RIFT_HEIGHT;
                 float z = (float) (Mth.lerp(pt, e.zo, e.getZ()) - cam.z);
                 BufferBuilder b = FxDraw.begin(s, DefaultVertexFormat.POSITION_TEX_COLOR);
-                FxDraw.billboard(b, x, y, z, left, up, RIFT_HALF * scale, 1f, 1f, 1f, Mth.clamp(scale, 0f, 1f));
+                FxDraw.billboard(b, x, y, z, left, up, RIFT_HALF * scale, 1f, 0.04f, 0.08f, Mth.clamp(scale, 0f, 1f));
                 FxDraw.end(b);
             } else if (e instanceof VisceraEntity) {
                 if (!began) {

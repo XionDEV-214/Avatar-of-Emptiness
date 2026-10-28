@@ -195,6 +195,30 @@ public abstract class Pattern {
         }
     }
 
+    protected void inboundComets() {
+        sound(ModSounds.SUBZERO_SHOOT, 1.0f);
+        double r = Arena.RADIUS - 1.0;
+        for (int i = 0; i < BossTuning.INBOUND_COMETS; i++) {
+            double ang = random().nextDouble() * Math.PI * 2.0;
+            double sx = Arena.CX + Math.cos(ang) * r;
+            double sz = Arena.CZ + Math.sin(ang) * r;
+            double y = Arena.FLOOR_Y + 0.8 + random().nextDouble() * 2.5;
+            double dx = bx() - sx, dz = bz() - sz;
+            double len = Math.sqrt(dx * dx + dz * dz);
+            if (len < 1.0e-4) continue;
+            dx /= len;
+            dz /= len;
+            Hazard h = hazards().spawn(HazardType.COMET, sx, y, sz);
+            h.setVel(dx * BossTuning.COMET_SPEED, 0, dz * BossTuning.COMET_SPEED);
+            h.setTarget(bx(), y, bz());
+            h.b = 1f;
+            h.life = (int) (len / BossTuning.COMET_SPEED) + 4;
+            h.size = 0.6f;
+            h.damage = BossTuning.COMET_DAMAGE;
+            h.a = (float) Math.atan2(-dx, dz);
+        }
+    }
+
     protected void shockwave() {
         Hazard h = hazards().spawn(HazardType.SHOCKWAVE, bx(), Arena.FLOOR_Y, bz());
         h.a = BossTuning.SHOCKWAVE_SPEED;
