@@ -22,6 +22,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
@@ -30,6 +31,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -69,7 +71,6 @@ public class AvatarEntity extends Monster {
     private List<ServerPlayer> players = List.of();
 
     private BossPhase phase = BossPhase.RIFT;
-    private double health = BossPhase.RIFT.maxHealth;
     private Vec3 anchor;
     private boolean initialized;
 
@@ -99,7 +100,7 @@ public class AvatarEntity extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 1000.0)
+                .add(Attributes.MAX_HEALTH, BossPhase.RIFT.maxHealth)
                 .add(Attributes.MOVEMENT_SPEED, 0.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
                 .add(Attributes.FOLLOW_RANGE, 256.0)
@@ -139,7 +140,7 @@ public class AvatarEntity extends Monster {
     }
 
     public double health() {
-        return health;
+        return getHealth();
     }
 
     @Override
@@ -201,16 +202,40 @@ public class AvatarEntity extends Monster {
         if (transitionTicks > 0 || victoryTicks >= 0 || getVisual() == VISUAL_HIDDEN) return false;
         if (amount <= 0) return false;
 
-        health -= amount;
-        playHurt();
-        if (health <= 0) {
-            health = 0;
-            advancePhase();
-        } else {
-            tryStartPattern();
+        BossPhase before = phase;
+        boolean result = super.hurt(source, amount);
+        if (result) {
+            playHurt();
+            if (phase == before && victoryTicks < 0) tryStartPattern();
         }
-        bossEvent.setProgress((float) Mth.clamp(health / phase.maxHealth, 0.0, 1.0));
-        return true;
+        updateBar();
+        return result;
+    }
+
+    @Override
+    public void die(DamageSource source) {
+        if (this.level().isClientSide || victoryTicks >= 0) return;
+        advancePhase();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return null;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return null;
+    }
+
+    private void updateBar() {
+        bossEvent.setProgress(Mth.clamp(getHealth() / getMaxHealth(), 0f, 1f));
+    }
+
+    private void applyMaxHealth(BossPhase p) {
+        AttributeInstance attr = getAttribute(Attributes.MAX_HEALTH);
+        if (attr != null) attr.setBaseValue(p.maxHealth);
+        setHealth((float) p.maxHealth);
     }
 
     private void playHurt() {
@@ -263,7 +288,7 @@ public class AvatarEntity extends Monster {
             initialized = true;
             anchor = position();
             setPhase(BossPhase.RIFT);
-            health = phase.maxHealth;
+            applyMaxHealth(phase);
             transitionTicks = BossTuning.INTRO_TICKS;
             this.entityData.set(DATA_TRANSITION, transitionTicks);
             level.playSound(null, getX(), getY() + 6, getZ(), ModSounds.RIFT_OPEN.get(), SoundSource.HOSTILE, 6f, 0.8f);
@@ -316,7 +341,7 @@ public class AvatarEntity extends Monster {
 
         contactDamage();
         hazards.tick(level, players);
-        bossEvent.setProgress((float) Mth.clamp(health / phase.maxHealth, 0.0, 1.0));
+        updateBar();
     }
 
     private void refreshPlayers(ServerLevel level) {
@@ -449,7 +474,6 @@ public class AvatarEntity extends Monster {
         if (!(level() instanceof ServerLevel)) return;
         cancelPattern();
         while (phase != target && phase.next() != null) {
-            health = 0;
             advancePhase();
             transitionTicks = Math.min(transitionTicks, 5);
         }
@@ -468,7 +492,7 @@ public class AvatarEntity extends Monster {
             return;
         }
         setPhase(next);
-        health = next.maxHealth;
+        applyMaxHealth(next);
         nextPatternTick = 0;
         globalCooldownUntil = 0;
         patternCooldowns.clear();
@@ -512,6 +536,7 @@ public class AvatarEntity extends Monster {
 
     private void victory(ServerLevel level) {
         victoryTicks = 0;
+        setHealth(1f);
         setVisual(VISUAL_HIDDEN);
         bossEvent.setProgress(0f);
         ModNetwork.sendToLevel(level, MusicPacket.stop());
